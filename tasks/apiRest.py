@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.db import connection
-from .models import Pelicula
-from .models import Cine
 
 
- 
 def index(request):
-    return render(request, 'index.html')
+    # Supongamos que tienes algún dato que quieres devolver como JSON
+    data = {
+        'message': '¡Hola desde la vista index!',
+        'status': 'success'
+    }
+    return JsonResponse(data)
 
 def cines(request):
     try:
@@ -26,11 +27,11 @@ def cines(request):
                     'Detalle': row[6]
                 }
                 cines.append(cine)
-        return render(request, 'cines.html', {'cines': cines})
+        return JsonResponse({'cines': cines})
     except Exception as e:
-        return HttpResponse("Error: " + str(e))
+        return JsonResponse({'error': str(e)}, status=500)
 
-def cine(request, id):
+def cine(request,id):
     try:
         with connection.cursor() as cursor:
             cursor.callproc('sp_getCine', (id,))
@@ -57,31 +58,31 @@ def cine(request, id):
                 'tarifas': tarifas,
                 'peliculas': peliculas,
             }
-        return render(request, 'cine.html', {'cine': cine})
+        return JsonResponse({'cine': cine})
     except Exception as e:
-        return HttpResponse("Error: " + str(e))
+        return JsonResponse({'error': str(e)}, status=500)
 
-def peliculas(request, id):
+def peliculas(request,id):
     try:
         if id == 'cartelera':
             id = 1
-        elif id == 'estrenos': 
+        elif id == 'estrenos':
             id = 2
         else:
             id = 0
         
         if id == 0:
-            return HttpResponse("Invalid ID")
+            return JsonResponse({'error': 'Invalid ID'}, status=400)
 
         with connection.cursor() as cursor:
             cursor.callproc('sp_getPeliculas', (id,))
             datos_peliculas = cursor.fetchall()
             peliculas = [{'id': row[0], 'Titulo': row[1], 'Sinopsis': row[2], 'Link': row[3]} for row in datos_peliculas]
-        return render(request, 'peliculas.html', {'peliculas': peliculas})
+        return JsonResponse({'peliculas': peliculas})
     except Exception as e:
-        return HttpResponse("Error: " + str(e))
+        return JsonResponse({'error': str(e)}, status=500)
 
-def pelicula(request, id):
+def pelicula(request,id):
     try:
         with connection.cursor() as cursor:
             cursor.callproc('sp_getPelicula', (id,))
@@ -102,6 +103,8 @@ def pelicula(request, id):
                 'Geneross': rows[11],
                 'FechaEstrenoss': rows[12],
             }
-        return render(request, 'pelicula.html', {'pelicula': pelicula})
+        return JsonResponse({'pelicula': pelicula})
     except Exception as e:
-        return HttpResponse("Error: " + str(e))
+        return JsonResponse({'error': str(e)}, status=500)
+    
+ 

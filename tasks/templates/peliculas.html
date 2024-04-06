@@ -9,7 +9,7 @@
 			<p>{{pelicula.Sinopsis}}</p>
 			<br/>
 			<div class="boton-pelicula"> 
-				<a href="{{ url_for('pelicula', id = pelicula.id) }}">
+				<a href="{% url 'pelicula' id=pelicula.id %}">
 					<img src="{% static 'img/varios/btn-mas-info.jpg' %}" width="120" height="30" alt="Ver info"/>
 				</a>
 			</div>
@@ -19,7 +19,9 @@
 				</a>
 			</div> 
 		</div>
-		<img src="{% static 'img/pelicula/' ~ pelicula.id ~ '.jpg' %}"  width="160" height="226"/><br/><br/>
+		<img src="{% static 'img/pelicula/' %}{{ pelicula.id }}.jpg"  width="160" height="226"/><br/><br/>
 	</div>
 {%endfor%}
 {%endblock contenido_interno%}
+
+ 

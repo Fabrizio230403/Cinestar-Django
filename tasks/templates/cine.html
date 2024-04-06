@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load static %}
 {% block contenido_interno %}
 	<div class="contenido-interno" id="contenido-interno">
 		<h2>{{ cine.RazonSocial }}</h2>
@@ -19,7 +20,7 @@
 					<p>A partir del 1ro de julio de 2016, Cinestar Multicines realizará el cobro de la comisión de S/. 1.00 adicional al tarifario vigente, a los usuarios que compren sus entradas por el aplicativo de Cine Papaya para Cine Star Comas, Excelsior, Las Américas, Benavides, Breña, San Juan, UNI, Aviación, Sur, Porteño, Tumbes y Tacna.</p>
 				</div>
 			</div>
-			<img src="{% static 'img/cine/'~cine.id~'.2.jpg' %}"/>
+			<img src="{% static 'img/cine/' %}{{ cine.id }}.2.jpg" width="227" heigth="170"/>
 			<br/><br/><h4>Los horarios de cada función están sujetos a cambios sin previo aviso.</h4><br/>
 			<div class="cine-info peliculas">
 				<div class="tabla">
@@ -37,10 +38,10 @@
 			</div>
 		</div>
 		<div>
-			<img style="float:left;" src="{% static '%img/cine/'~cine.id~'.3.jpg' %}" alt="Imagen del cine"/>
+			<img style="float:left;" src="{% static 'img/cine/' %}{{ cine.id }}.3.jpg" alt="Imagen del cine"/>
 			<span class="tx_gris">Precios de los juegos: desde S/1.00 en todos los Cine Star.<br/>
 				Horario de atención de juegos es de 12:00 m hasta las 10:30 pm. 
-				<br/><br/>6
+				<br/><br/>
 				Visitános y diviértete con nosotros. 
 				<br/><br/>
 				<b>CINESTAR</b>, siempre pensando en tí. 
